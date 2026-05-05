@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Tahadi 🚀</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: rgb(20, 165, 78);
+            --bg-color: #f0f4f3;
+            --dark-green: #143d31;
+        }
+
+        body {
+            font-family:  serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        nav {
+            background-color: var(--dark-green);
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        nav img { width: 130px; }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            font-size: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--primary-color); }
+
+        .btn-signup-nav {
+            background-color: var(--primary-color);
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .auth-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background: var(--dark-green);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            
+        }
+
+        h2 { color: #ffffff; margin-bottom: 10px; font-size: 32px; }
+        .p-text { color: #ffffff; margin-bottom: 30px; opacity: 0.9; }
+        
+        input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid transparent;
+            border-radius: 15px;
+            box-sizing: border-box;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: var(--primary-color); }
+
+        .btn-login {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 18px;
+            width: 100%;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-login:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(20, 165, 78, 0.3); }
+
+        .footer-link { color: var(--primary-color); text-decoration: none; font-weight: bold; }
+        .footer-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <img src="loga.svg" alt="Tahadi Logo">
+        <div class="nav-links">
+            <a href="in0.html">Home</a>
+            <a href="#">Contact</a>
+            <a href="login.html" class="btn-signup-nav">Sign Up</a>
+        </div>
+    </nav>
+
+    <div class="auth-wrapper">
+        <div class="auth-container">
+            <h2>Welcome Back!</h2>
+            <p class="p-text">Don't have an account? <a href="login.html" class="footer-link">Create Account</a></p>
+            
+            <input type="email" id="email" placeholder="Email Address">
+            <input type="password" id="password" placeholder="Password">
+            
+            <button class="btn-login" id="login-btn">Sign In</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDOFHa_Huqk7pjZQpzt_U81pJBI2IyBGGk", 
+            authDomain: "challenge-fa13d.firebaseapp.com",
+            projectId: "challenge-fa13d",
+            storageBucket: "challenge-fa13d.appspot.com",
+            messagingSenderId: "293909956879",
+            appId: "1:293909956879:web:a6e0c9c12848c72bb3167a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const loginBtn = document.getElementById('login-btn');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+
+        loginBtn.addEventListener('click', async () => {
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            if(!email || !password) {
+                alert("Please fill in all fields");
+                return;
+            }
+
+            try {
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                // شلنا شرط التفعيل حالياً عشان تفتح معاك، لو عايز تفعله لازم تضيف كود التفعيل في صفحة التسجيل
+                console.log("Login Success");
+                window.location.href = "profel.html"; 
+
+            } catch (error) {
+                console.error("Login Error:", error.code);
+                // معالجة الخطأ الموحد في Firebase الجديد
+                if (error.code === 'auth/invalid-login-credentials' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+                    alert("Invalid email or password. Please check your details.");
+                } else {
+                    alert("Error: " + error.message);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

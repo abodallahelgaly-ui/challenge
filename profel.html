@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Tahadi 🚀</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: rgb(20, 165, 78);
+            --secondary-color: #5fa218;
+            --bg-color: #f0f4f3;
+            --text-color: #2c3e50;
+            --danger-color: #e74c3c;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            font-family: 'Fredoka', sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .profile-wrapper {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .sidebar-profile {
+            background-color: #143d31;
+            border-radius: 30px;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            height: fit-content;
+            border-bottom: 8px solid var(--primary-color);
+        }
+
+        .avatar-box {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 20px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            border: 6px solid var(--secondary-color);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        #imageUpload {
+            display: none;
+        }
+
+        .sidebar-profile h2 {
+            color: var(--primary-color);
+            font-size: 28px;
+            margin: 10px 0;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .info-card {
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgb(232, 228, 228);
+            background-color: #143d31;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-size: 22px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .info-card h3 {
+            color: #ffffff !important;
+            font-size: 32px;
+            margin: 0;
+        }
+
+        .info-card p {
+            color: #ffffff;
+            margin-top: 5px;
+            opacity: 0.8;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 20px;
+        }
+
+        .badge-item {
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .badge-circle {
+            width: 80px;
+            height: 80px;
+            background: #f8f9fa;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 10px;
+            border: 2px dashed #ccc;
+        }
+
+        .badge-item.earned .badge-circle {
+            background: #fff;
+            border: 2px solid var(--secondary-color);
+        }
+
+        .badge-item:hover { transform: scale(1.1); }
+
+        .p { color: #ffffff; }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 15px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: bold;
+            text-align: center;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 16px;
+        }
+
+        .btn-primary { background: var(--primary-color); color: white; }
+        .btn-outline { border: 2px solid var(--primary-color); color: var(--primary-color); background: white; }
+        .btn-logout { background: var(--danger-color); color: white; margin-top: 10px; }
+        .btn:hover { opacity: 0.9; transform: translateY(-3px); }
+
+        @media (max-width: 850px) {
+            .profile-wrapper { grid-template-columns: 1fr; }
+            .sidebar-profile { width: 100%; box-sizing: border-box; }
+        }
+    </style>
+</head>
+<body>
+
+    <input type="file" id="imageUpload" accept="image/*">
+
+    <div class="profile-wrapper">
+        <aside class="sidebar-profile">
+            <div class="avatar-box">
+                <!-- إضافة id للـ img لضمان تحميل الصورة -->
+                <img id="userAvatar" src="https://img.icons8.com/?size=100&id=492ILERveW8G&format=png&color=000000" alt="Avatar">
+            </div>
+            <h2 id="userName">user</h2>
+            <p style="color: #ffffff; opacity: 0.7;" id="userGrade">Grade 1 - Explorer 🎒</p>
+            
+            <div class="action-buttons">
+                <a href="indx.html" class="btn btn-primary">Go to Levels</a>
+                <button id="editProfileBtn" class="btn btn-outline">Edit Profile</button>
+                <button id="logout-btn" class="btn btn-logout"> Sign Out➔</button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="info-card">
+                <div class="card-title">📊 My Progress</div>
+                <div style="display: flex; justify-content: space-around; text-align: center;">
+                    <div><h3>6</h3><p>Total Levels</p></div>
+                    <div><h3 id="statCompleted">0</h3><p>Completed</p></div>
+                    <div><h3 id="statPoints">0</h3><p>Points ✨</p></div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-title">🏆 My Badges</div>
+                <div class="badges-grid">
+                    <div class="badge-item earned"><div class="badge-circle">🔤</div><span class="p">Letters</span></div>
+                    <div class="badge-item earned"><div class="badge-circle">🔢</div><span class="p">Numbers</span></div>
+                    <div class="badge-item"><div class="badge-circle">🔒</div><span class="p">Clothes</span></div>
+                    <div class="badge-item"><div class="badge-circle">🔒</div><span class="p">Fruits</span></div>
+                    <div class="badge-item earned"><div class="badge-circle">🔒</div><span class="p">Colors</span></div>
+                    <div class="badge-item"><div class="badge-circle">🔒</div><span class="p">vegetables</span></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDOFHa_Huqk7pjZQpzt_U81pJBI2IyBGGk", 
+            authDomain: "challenge-fa13d.firebaseapp.com",
+            projectId: "challenge-fa13d",
+            storageBucket: "challenge-fa13d.appspot.com",
+            messagingSenderId: "293909956879",
+            appId: "1:293909956879:web:a6e0c9c12848c72bb3167a"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const userNameElem = document.getElementById('userName');
+        const userAvatarElem = document.getElementById('userAvatar');
+        const statPointsElem = document.getElementById('statPoints');
+        const statCompletedElem = document.getElementById('statCompleted');
+        const imageUpload = document.getElementById('imageUpload');
+        const editProfileBtn = document.getElementById('editProfileBtn');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // تحميل الصورة من LocalStorage
+        const savedAvatar = localStorage.getItem('activeAvatar');
+        if (savedAvatar) {
+            userAvatarElem.src = savedAvatar;
+        }
+
+        editProfileBtn.addEventListener('click', () => {
+            imageUpload.click();
+        });
+
+        imageUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const base64Image = event.target.result;
+                    userAvatarElem.src = base64Image;
+                    localStorage.setItem('activeAvatar', base64Image);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                userNameElem.innerText = user.displayName || "Abdalla Mohamed";
+                try {
+                    const userRef = doc(db, "users", user.uid);
+                    const userSnap = await getDoc(userRef);
+                    if (userSnap.exists()) {
+                        const userData = userSnap.data();
+                        statPointsElem.innerText = userData.points || 0;
+                        statCompletedElem.innerText = userData.completedLevels || 0;
+                    }
+                } catch (error) {
+                    console.error("Firestore Error:", error);
+                }
+            } else {
+                // إذا لم يكن هناك مستخدم مسجل في Firebase ولم يكن هناك مستخدم نشط في التخزين المحلي
+                if (!localStorage.getItem('activeUser')) {
+                    window.location.href = "login.html";
+                }
+            }
+        });
+
+        // تعديل وظيفة تسجيل الخروج لضمان التوجيه
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth).then(() => {
+                // مسح البيانات المحلية والتحويل لصفحة الدخول
+                localStorage.removeItem('activeUser');
+                localStorage.removeItem('activeAvatar');
+                window.location.replace("login.html");
+            }).catch((error) => {
+                console.error("Sign Out Error", error);
+                // تحويل احتياطي في حال حدوث خطأ
+                window.location.replace("login.html");
+            });
+        });
+    </script>
+</body>
+</html>

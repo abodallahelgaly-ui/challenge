@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إنشاء حساب - تحدي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+  :root {
+            --primary-color: rgb(20, 165, 78);
+  }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            font-family: serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            direction: ltr; /* لضبط الحقول بالإنجليزية */
+        }
+
+        nav {
+            background-color:  #143d31;
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+   
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            font-size: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--primary-color); }
+
+        .btn-signup-nav {
+            background-color: var(--primary-color);
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        /* حاوية الفورمة */
+        .auth-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .auth-container {
+            background-color: #143d31;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            color: white;
+        }
+
+        h2 { margin-bottom: 10px; font-size: 24px; }
+        .subtitle { color: #ccc; margin-bottom: 25px; font-size: 14px; }
+        .subtitle a { color: #27ae60; text-decoration: none; font-weight: bold; }
+
+        .btn-google {
+            display: flex; align-items: center; justify-content: center;
+            background-color: white; border: none; color: #555;
+            padding: 12px; width: 100%; border-radius: 10px;
+            margin-bottom: 20px; cursor: pointer; font-weight: bold;
+        }
+        .google-icon { width: 20px; margin-right: 10px; }
+
+        hr { border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0; }
+
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
+        
+        input {
+            width: 100%; padding: 12px 15px; border: 2px solid transparent;
+            border-radius: 10px; outline: none; transition: 0.3s; font-size: 15px;
+        }
+        input:focus { border-color: #27ae60; }
+
+        .btn-login {
+            background-color: #27ae60; color: white; border: none;
+            padding: 15px; width: 100%; border-radius: 10px;
+            font-size: 16px; font-weight: bold; cursor: pointer;
+        }
+
+        /* رسالة التنبيه المخصصة */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7);
+            z-index: 9999; justify-content: center; align-items: center;
+        }
+        .modal-box {
+            background: white; padding: 30px; border-radius: 20px;
+            text-align: center; max-width: 350px; width: 90%;
+            border-bottom: 5px solid #27ae60;
+            animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        .modal-box p { color: #333; font-weight: bold; margin: 15px 0; font-size: 18px; direction: rtl; }
+        .modal-box button {
+            background: #27ae60; color: white; border: none;
+            padding: 10px 30px; border-radius: 10px; cursor: pointer;
+        }
+      
+        @keyframes popIn { 0% { transform: scale(0.5); } 100% { transform: scale(1); } }
+    img{
+  width: 130px;
+
+}
+    </style>
+</head>
+<body>
+
+   <nav>
+                      <img src="loga.svg" alt="لوجو تحدي">
+
+        <div class="nav-links">
+            <a href="in0.html">Home</a>
+
+            <a href="#">Contact</a>
+            <a href="signup.html" class="btn-signup-nav">Sign in</a>
+        </div>
+    </nav>
+
+    <div class="auth-section">
+        <div class="auth-container">
+            <h2>Create a Free Account</h2>
+            <p class="subtitle">Already have an account? <a href="signup.html">Sign In</a></p>
+            
+            <button class="btn-google" id="google-btn">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" class="google-icon">
+                Continue with Google
+            </button>
+
+            <hr>
+
+            <div class="input-group">
+                <label>Name</label>
+                <input type="text" id="name" placeholder="Mohammad">
+            </div>
+
+            <div class="input-group">
+                <label>Email Address</label>
+                <input type="email" id="email" placeholder="example@gmail.com">
+            </div>
+
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Create a strong password">
+            </div>
+
+            <button class="btn-login" id="signup-btn">Sign Up Now</button>
+        </div>
+    </div>
+
+    <!-- صندوق التنبيه المخصص -->
+    <div id="customAlert" class="modal-overlay">
+        <div class="modal-box">
+            <div id="alertIcon" style="font-size: 50px;">⭐</div>
+            <p id="alertMessage">يا بطل، لازم تملأ كل الخانات عشان تبدأ التحدي!</p>
+            <button onclick="closeAlert()">حاضر!</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+        // إضافة sendEmailVerification و updateProfile للتحقق
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            GoogleAuthProvider, 
+            signInWithPopup, 
+            sendEmailVerification,
+            updateProfile,
+            signOut 
+        } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDOFHa_Huqk7pjZQpzt_U81pJBI2IyBGGk", 
+            authDomain: "challenge-fa13d.firebaseapp.com",
+            projectId: "challenge-fa13d",
+            storageBucket: "challenge-fa13d.appspot.com",
+            messagingSenderId: "293909956879",
+            appId: "1:293909956879:web:a6e0c9c12848c72bb3167a",
+            measurementId: "G-K7PW0WLMPH"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        window.showAlert = function(msg, icon = "⭐") {
+            document.getElementById('alertIcon').innerText = icon;
+            document.getElementById('alertMessage').innerText = msg;
+            document.getElementById('customAlert').style.display = 'flex';
+        }
+        window.closeAlert = function() {
+            document.getElementById('customAlert').style.display = 'none';
+        }
+
+        // تنفيذ التسجيل بالإيميل مع التحقق
+        document.getElementById('signup-btn').addEventListener('click', async () => {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            if (name === "" || email === "" || password === "") {
+                showAlert("يا بطل، لازم تملأ كل الخانات عشان تبدأ التحدي! 😊");
+                return;
+            }
+
+            try {
+                // 1. إنشاء الحساب
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // 2. تحديث اسم المستخدم في Firebase
+                await updateProfile(user, { displayName: name });
+
+                // 3. إرسال إيميل التحقق
+                await sendEmailVerification(user);
+
+                // 4. حفظ البيانات المبدئية
+                localStorage.setItem('activeUser', name);
+                localStorage.setItem('activeAvatar', `https://api.dicebear.com/7.x/avataaars/svg?seed=${name}`);
+
+                showAlert("تم إنشاء الحساب بنجاح! 🎉 ابعتنا رسالة تفعيل لإيميلك، لازم تفتحها وتدوس على اللينك عشان تعرف تدخل الموقع.", "📧");
+                
+                // تسجيل خروج المستخدم فوراً حتى يقوم بالتحقق
+                await signOut(auth);
+                
+                // توجيهه لصفحة اللوجن بعد التأكيد
+                setTimeout(() => { window.location.href = "login.html"; }, 5000);
+
+            } catch (error) {
+                let errorMessage = "حصلت مشكلة";
+                if (error.code === 'auth/email-already-in-use') errorMessage = "الإيميل ده مستخدم قبل كدة يا بطل!";
+                if (error.code === 'auth/weak-password') errorMessage = "الباسورد ضعيف، خليه 6 أرقام أو حروف أو أكتر.";
+                if (error.code === 'auth/invalid-email') errorMessage = "تأكد من كتابة الإيميل بشكل صحيح (مثال: name@gmail.com)";
+                showAlert(errorMessage, "❌");
+            }
+        });
+
+        // تسجيل جوجل (جوجل إيميلاته موثقة وجاهزة فمش محتاجين خطوة التحقق الزيادة دي فيه)
+        document.getElementById('google-btn').addEventListener('click', () => {
+            const provider = new GoogleAuthProvider();
+            signInWithPopup(auth, provider)
+                .then((result) => {
+                    const user = result.user;
+                    localStorage.setItem('activeUser', user.displayName);
+                    localStorage.setItem('activeAvatar', user.photoURL);
+                    window.location.href = "indx.html";
+                })
+                .catch((error) => {
+                    showAlert("حصل مشكلة في دخول جوجل: " + error.message, "❌");
+                });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>LEVELS🚀</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff81;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 100px;
+            background-color: #143d31;       
+            transition: width 0.4s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 1000;
+        }
+
+        .sidebar:hover {
+            width: 170px;
+        }
+
+        .profile-section {
+            padding: 25px 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-section img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid white;
+            object-fit: cover;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+            flex-grow: 1;
+        }
+
+        .nav-links li a {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            text-decoration: none;
+            color: white;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+
+        .nav-links li:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .icon {
+            font-size: 24px;
+            min-width: 35px;
+            margin-right: 15px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .text {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            font-size: 18px;
+            font-weight: bold;
+            font-family:  serif;
+        }
+
+        .sidebar:hover .text {
+            opacity: 1;
+        }
+
+        .nav-bottom {
+            padding: 20px 5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            background-color: #ff4d4d;
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 10px;
+            transition: 0.3s;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+        }
+
+        .logout-btn:hover {
+            background-color: #e60000;
+            transform: scale(1.05);
+        }
+
+        .learning-section {
+            margin-left: 120px;
+            margin-right: 40px;
+            text-align: center;
+            padding-top: 40px; 
+                        font-family: 'Fredoka', sans-serif;
+
+        }
+
+        .section-title {
+            font-weight: 900;
+            font-size: 45px;
+            letter-spacing: 10px;
+            color: #1a5e48;
+            margin-bottom: 40px;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            max-width: 1100px;
+            margin: 0 auto 50px;
+        }
+
+        .card {
+            background-color: #143d31;       
+            border-radius: 15px;
+            padding: 25px;
+            text-decoration: none;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border: 2px solid #5fa218;
+        }
+
+        .card img {
+            width: 180px;
+            height: auto;
+            background: #c7cacc;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+        }
+
+        .card h1 { font-size: 22px; margin: 10px 0; }
+        .card h3 { font-size: 24px; margin: 5px 0; }
+        .card p { font-size: 15px; opacity: 0.9; line-height: 1.4; }
+
+        @media (max-width: 900px) {
+            .cards-container { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 600px) {
+            .cards-container { grid-template-columns: 1fr; }
+            .learning-section { margin-left: 100px; }
+        }
+        #chat-circle {
+            position: fixed; bottom: 20px; right: 20px;
+            width: 60px; height: 60px; background: linear-gradient(45deg, #4285f4, #9b72cb);
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 2000; transition: 0.3s;
+        }
+        #chat-box {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 350px;
+    height: 450px;
+    background-color: rgb(173, 204, 187); /* تأكد أنها white وليس شفاف */
+    border-radius: 20px;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    z-index: 9999; /* ارفع الرقم هنا ليكون أعلى من الكروت */
+    overflow: hidden;
+}
+        .chat-header { background: var(--gemini-bg); color: white; padding: 15px 20px; display: flex; justify-content: space-between; font-weight: bold; border-bottom: 1px solid #333; }
+        #chat-content { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: var(--gemini-bg); }
+        
+        .msg { padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.5; max-width: 85%; font-family: sans-serif; }
+        .bot-msg { background: transparent; color: var(--gemini-text); align-self: flex-start; display: flex; gap: 10px; }
+        .bot-msg::before { content: "✨"; }
+        .user-msg { background: #2b2c2f; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+
+        .chat-input-area { padding: 15px; background: var(--gemini-bg); display: flex; gap: 10px; align-items: center; }
+        .input-wrapper { flex: 1; background: var(--gemini-input); border-radius: 25px; padding: 5px 15px; display: flex; align-items: center; }
+        .input-wrapper input { flex: 1; background: transparent; border: none; color: white; padding: 10px; outline: none; }
+        
+        .action-btn { background: transparent; border: none; cursor: pointer; color: #8e918f; transition: 0.2s; display: flex; align-items: center; }
+        .action-btn:hover { color: white; }
+        .mic-active { color: #ea4335 !important; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div>
+            <div class="profile-section">
+                <a href="profel.html">
+                    <img src="https://img.icons8.com/?size=100&id=492ILERveW8G&format=png&color=000000" alt="Profile">
+                </a>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="in0.html"><span class="icon">🏠</span><span class="text">Home</span></a></li>
+                <li><a href="indx.html"><span class="icon">📊</span><span class="text">Levels</span></a></li>
+                <li><a href="page1.html"><span class="icon">🔤</span><span class="text">Letters</span></a></li>
+                <li><a href="numbers.html"><span class="icon">🔢</span><span class="text">Numbers</span></a></li>
+                <li><a href="cloths.html"><span class="icon">👕</span><span class="text">Clothes</span></a></li>
+                <li><a href="fruits.html"><span class="icon">🍓</span><span class="text">Fruits</span></a></li>
+                <li><a href="vegetables.html"><span class="icon">🥦</span><span class="text">Vegetables</span></a></li>
+                <li><a href="color.html"><span class="icon">🌈</span><span class="text">Colors</span></a></li>
+            </ul>
+        </div>
+
+        <div class="nav-bottom">
+            <button id="logoutBtn" class="logout-btn">
+                <span class="icon" style="margin-right: 5px;">➔</span>
+                <span class="text">Logout</span>
+            </button>
+        </div>
+    </nav>
+
+    <section class="learning-section">
+        <h1 class="section-title">LEVELS🚀</h1>
+        
+        <div class="cards-container">
+            <a href="page1.html" class="card">
+                <h1>LEVEL 1</h1>
+                <img src="letters.svg" alt="Letters">
+                <h3>Letters</h3>
+                <p>Learn English letters interactively 💕</p>
+            </a>
+
+            <a href="numbers.html" class="card">
+                <h1>LEVEL 2</h1>
+                <img src="numbers.svg" alt="Numbers">
+                <h3>Numbers</h3>
+                <p>Let's count together in English 🔢</p>
+            </a>
+
+            <a href="cloths.html" class="card">
+                <h1>LEVEL 3</h1>
+                <img src="cloths.svg" alt="Clothes">
+                <h3>Clothes</h3>
+                <p>What shall we wear today? 👔</p>
+            </a>
+
+            <a href="fruits.html" class="card">
+                <h1>LEVEL 4</h1>
+                <img src="fruis.svg" alt="Fruits">
+                <h3>Fruits</h3>
+                <p>Fruits are delicious and healthy 🍓</p>
+            </a>
+
+            <a href="vegetables.html" class="card">
+                <h1>LEVEL 5</h1>
+                <img src="vegetables.svg" alt="Vegetables">
+                <h3>Vegetables</h3>
+                <p>Fresh vegetables for our health 🥦</p>
+            </a>
+
+            <a href="color.html" class="card">
+                <h1>LEVEL 6</h1>
+                <img src="colors.svg" alt="Colors">
+                <h3>Colors</h3>
+                <p>Our world is full of colors 🎨</p>
+            </a>
+        </div>
+    </section>
+ <div id="chat-circle" onclick="toggleChat()">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
+    </div>
+
+    <div id="chat-box">
+        <div class="chat-header">
+            <span>✨ Gemini Assistant</span>
+            <button onclick="toggleChat()" style="background:none; border:none; color:white; cursor:pointer; font-size:20px;">×</button>
+        </div>
+        <div id="chat-content">
+            <div class="bot-msg">مرحباً! كيف أساعدك اليوم في تعلم الإنجليزية؟ <br> Hi! How can I help you with English today?</div>
+        </div>
+        <div class="chat-input-area">
+            <div class="input-wrapper">
+                <input type="text" id="user-input" placeholder="اكتب أو تحدث هنا..." onkeypress="if(event.key === 'Enter') sendMessage()">
+                <button class="action-btn" id="mic-btn" onclick="startVoice()">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                </button>
+            </div>
+            <button class="action-btn" onclick="sendMessage()" style="color: #69b01a;">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+        </div>
+    </div>
+<script>
+    // كود تسجيل الخروج المحدث
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            sessionStorage.removeItem('isLoggedIn'); 
+            sessionStorage.removeItem('currentUser');
+            window.location.href = "login.html"; 
+        });
+    }
+     function toggleChat() {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.style.display = (chatBox.style.display === 'none' || chatBox.style.display === '') ? 'flex' : 'none';
+        }
+
+        function startVoice() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) return alert("متصفحك لا يدعم التعرف الصوتي.");
+
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'ar-SA'; // يتعرف على العربي والإنجليزي تلقائياً في معظم الأنظمة
+
+            const micBtn = document.getElementById('mic-btn');
+            const inputField = document.getElementById('user-input');
+
+            recognition.onstart = () => {
+                micBtn.classList.add('mic-active');
+                inputField.placeholder = "جاري الاستماع...";
+            };
+
+            recognition.onresult = (event) => {
+                inputField.value = event.results[0][0].transcript;
+                setTimeout(sendMessage, 600); // إرسال تلقائي فور التوقف
+            };
+
+            recognition.onend = () => {
+                micBtn.classList.remove('mic-active');
+                inputField.placeholder = "اكتب أو تحدث هنا...";
+            };
+
+            recognition.start();
+        }
+
+       async function sendMessage() {
+    const input = document.getElementById('user-input');
+    const content = document.getElementById('chat-content');
+    const text = input.value.trim();
+    if (!text) return;
+
+    content.innerHTML += `<div class="msg user-msg">${text}</div>`;
+    input.value = '';
+    content.scrollTop = content.scrollHeight;
+
+    const loadingId = 'loading-' + Date.now();
+    content.innerHTML += `<div class="msg bot-msg" id="${loadingId}">...</div>`;
+
+    try {
+        const response = await fetch("http://localhost:3000/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message: text }),
+        });
+
+        const data = await response.json();
+
+        document.getElementById(loadingId).innerText = data.reply;
+
+    } catch (e) {
+        document.getElementById(loadingId).innerText = "خطأ في الاتصال بالسيرفر.";
+    }
+
+    content.scrollTop = content.scrollHeight;
+}
+ function toggleChat() {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.style.display = (chatBox.style.display === 'none' || chatBox.style.display === '') ? 'flex' : 'none';
+        }
+
+        function startVoice() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) return alert("متصفحك لا يدعم التعرف الصوتي.");
+
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'ar-SA'; // يتعرف على العربي والإنجليزي تلقائياً في معظم الأنظمة
+
+            const micBtn = document.getElementById('mic-btn');
+            const inputField = document.getElementById('user-input');
+
+            recognition.onstart = () => {
+                micBtn.classList.add('mic-active');
+                inputField.placeholder = "جاري الاستماع...";
+            };
+
+            recognition.onresult = (event) => {
+                inputField.value = event.results[0][0].transcript;
+                setTimeout(sendMessage, 600); // إرسال تلقائي فور التوقف
+            };
+
+            recognition.onend = () => {
+                micBtn.classList.remove('mic-active');
+                inputField.placeholder = "اكتب أو تحدث هنا...";
+            };
+
+            recognition.start();
+        }
+
+       async function sendMessage() {
+    const input = document.getElementById('user-input');
+    const content = document.getElementById('chat-content');
+    const text = input.value.trim();
+    if (!text) return;
+
+    content.innerHTML += `<div class="msg user-msg">${text}</div>`;
+    input.value = '';
+    content.scrollTop = content.scrollHeight;
+
+    const loadingId = 'loading-' + Date.now();
+    content.innerHTML += `<div class="msg bot-msg" id="${loadingId}">...</div>`;
+
+    try {
+        const response = await fetch("http://localhost:3000/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message: text }),
+        });
+
+        const data = await response.json();
+
+        document.getElementById(loadingId).innerText = data.reply;
+
+    } catch (e) {
+        document.getElementById(loadingId).innerText = "خطأ في الاتصال بالسيرفر.";
+    }
+
+    content.scrollTop = content.scrollHeight;
+}
+</script>
+</body>
+</html>

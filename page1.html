@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LETTERS 🔤</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-green: #143d31;
+            --hover-green: #69b01a;
+            --game-blue: #5d78ff;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+                      font-family: 'Fredoka', sans-serif;
+
+        }
+
+        /* --- Sidebar Style --- */
+        .sidebar {
+            position: fixed;
+            left: 0; top: 0; height: 100vh; width: 100px;
+            background-color: var(--primary-green);
+            transition: width 0.4s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 1000;
+                                  font-family:  serif;
+
+        }
+        .sidebar:hover { width: 170px; }
+
+        .profile-section { padding: 25px 0; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .profile-section img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid white; object-fit: cover; }
+
+        .nav-links { list-style: none; padding: 0; margin-top: 20px; flex-grow: 1; }
+        .nav-links li a {
+            display: flex; align-items: center; padding: 15px 25px;
+            text-decoration: none; color: white; white-space: nowrap; transition: 0.3s;
+        }
+        .nav-links li:hover { background-color: rgba(255, 255, 255, 0.1); }
+        .icon { font-size: 24px; min-width: 35px; margin-right: 15px; display: flex; justify-content: center; }
+        .text { opacity: 0; transition: opacity 0.2s ease; font-size: 18px; font-weight: bold;
+          font-family: serif;
+        }
+        .sidebar:hover .text { opacity: 1; }
+
+        .nav-bottom { padding: 20px 5px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .logout-btn {
+            display: flex; align-items: center; background-color: #ff4d4d; color: white;
+            padding: 10px; border-radius: 10px; transition: 0.3s; justify-content: center;
+            cursor: pointer; border: none; width: 105%; font-family: 'Fredoka', sans-serif;
+        }
+
+        /* --- Content Layout --- */
+        .main-container { margin-left: 120px; padding: 40px; text-align: center; }
+        .H1 { font-weight: 900; font-size: 45px; letter-spacing: 10px; color: var(--primary-green); margin-bottom: 30px; }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 20px; max-width: 1100px; margin: 0 auto;
+        }
+
+        .letter-card {
+            background: var(--primary-green); border-radius: 20px; padding: 25px;
+            text-align: center; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .letter-card:hover { transform: translateY(-8px); background-color: var(--hover-green); }
+        .letter-card h2 { font-size: 50px; margin: 0; color: white; }
+        .letter-card p { margin: 10px 0 0; color: #e0e0e0; font-weight: 600; }
+
+        /* --- Letter Modal --- */
+        .modal {
+            display: none; position: fixed; z-index: 2001;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); justify-content: center; align-items: center;
+        }
+        .modal-content {
+            background-color: #046456; padding: 30px; border-radius: 25px;
+            width: 90%; max-width: 450px; text-align: center; color: white; position: relative;
+        }
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; color: #ccc; }
+        .big-letter { font-size: 100px; color: white; margin: 10px 0; }
+        .example-img { width: 150px; height: 150px; margin: 15px 0; border-radius: 15px; background: white; padding: 10px; object-fit: contain; }
+
+        .audio-btn {
+            background-color: #7ed321; color: white; border: none; padding: 12px 25px;
+            border-radius: 50px; font-size: 16px; cursor: pointer; margin: 10px 0; font-family: 'Fredoka', sans-serif;
+        }
+
+        /* --- Game Design (رجعناه للأصلي) --- */
+        .game-start-btn {
+                background-color: #1a5e48;
+; color: white; border: none; padding: 50px 40px;
+            border-radius: 15px; font-size: 22px; cursor: pointer; font-family: 'Fredoka', sans-serif;
+            font-weight: bold; margin: 40px 0; transition: 0.3s;
+        }
+        .game-overlay {
+            display: none; position: fixed; z-index: 3000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); justify-content: center; align-items: center;
+        }
+        .game-content { background-color: var(--game-blue); width: 90%; max-width: 500px; padding: 40px 20px; border-radius: 30px; text-align: center; color: white; position: relative; }
+        .game-card {
+            background: white; color: var(--game-blue); width: 80px; height: 100px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem; font-weight: bold; border-radius: 15px; cursor: pointer; transition: 0.3s;
+        }
+        .game-card.correct { background-color: #7ed321 !important; color: white !important; }
+        .game-card.wrong { background-color: #ff4757 !important; color: white !important; }
+
+    
+        
+           .logout-btn:hover {
+            background-color: #e60000;
+            transform: scale(1.05);
+        }
+        .game-start-btn:hover { transform: scale(1.1); background-color: #69b01a; }
+        .videos-wrapper {
+        display: flex;        
+        justify-content: center;
+        gap: 20px;             
+        flex-wrap: wrap;       
+        padding: 20px;
+    }
+    .video-item {
+        flex: 1;              
+        min-width: 300px;       
+        max-width: 560px;     
+    }
+    .video-item iframe {
+        width: 100%;
+        height: 315px;          
+        border-radius: 12px;  
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+   .videos-section { margin-top: 50px; }
+        .videos-wrapper { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; padding: 20px; }
+        .video-item { flex: 1; min-width: 300px; max-width: 560px; }
+        .video-item iframe { width: 100%; height: 315px; border-radius: 12px; }
+
+        /* --- Gemini Chatbot UI Modification --- */
+        #chat-circle {
+            position: fixed; bottom: 20px; right: 20px;
+            width: 60px; height: 60px; background: linear-gradient(45deg, #4285f4, #9b72cb);
+            border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 2000; transition: 0.3s;
+        }
+        #chat-box {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 350px;
+    height: 450px;
+    background-color: rgb(173, 204, 187); /* تأكد أنها white وليس شفاف */
+    border-radius: 20px;
+    display: none;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    z-index: 9999; /* ارفع الرقم هنا ليكون أعلى من الكروت */
+    overflow: hidden;
+}
+        .chat-header {   background: var(--gemini-bg); color: white; padding: 15px 20px; display: flex; justify-content: space-between; font-weight: bold; border-bottom: 1px solid #333; }
+        #chat-content { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: var(--gemini-bg); }
+        
+        .msg { padding: 12px 16px; border-radius: 18px; font-size: 14px; line-height: 1.5; max-width: 85%; font-family: sans-serif; }
+        .bot-msg { background: transparent; color: var(--gemini-text); align-self: flex-start; display: flex; gap: 10px; }
+        .bot-msg::before { content: "✨"; }
+        .user-msg { background: #2b2c2f; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+
+        .chat-input-area { padding: 15px; background: var(--gemini-bg); display: flex; gap: 10px; align-items: center; }
+        .input-wrapper { flex: 1; background: var(--gemini-input); border-radius: 25px; padding: 5px 15px; display: flex; align-items: center; }
+        .input-wrapper input { flex: 1; background: transparent; border: none; color: white; padding: 10px; outline: none; }
+        
+        .action-btn { background: transparent; border: none; cursor: pointer; color: #8e918f; transition: 0.2s; display: flex; align-items: center; }
+        .action-btn:hover { color: white; }
+        .mic-active { color: #ea4335 !important; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        .h2{
+             font-family: serif
+        }
+    </style> 
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div>
+            <div class="profile-section">
+                <a href="profel.html"><img src="https://img.icons8.com/?size=100&id=492ILERveW8G&format=png&color=000000" alt="Profile"></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="in0.html"><span class="icon">🏠</span><span class="text">Home</span></a></li>
+                <li><a href="indx.html"><span class="icon">📊</span><span class="text">Levels</span></a></li>
+                <li><a href="page1.html"><span class="icon">🔤</span><span class="text">Letters</span></a></li>
+                <li><a href="numbers.html"><span class="icon">🔢</span><span class="text">Numbers</span></a></li>
+                <li><a href="cloths.html"><span class="icon">👕</span><span class="text">Clothes</span></a></li>
+                <li><a href="fruits.html"><span class="icon">🍓</span><span class="text">Fruits</span></a></li>
+                <li><a href="vegetables.html"><span class="icon">🥦</span><span class="text">Vegetables</span></a></li>
+                <li><a href="color.html"><span class="icon">🌈</span><span class="text">Colors</span></a></li>
+            </ul>
+        </div>
+        <div class="nav-bottom">
+            <button id="logoutBtn" class="logout-btn"><span class="icon">➔</span><span class="text">Logout</span></button>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <h1 class="H1">LETTERS 🔤</h1>
+        
+        <div class="grid-container" id="alphabetGrid"></div>
+
+        <button class="game-start-btn" onclick="openGameModal()">🎮  Letters Challenge</button>
+
+        <section class="videos-section">
+        <h2 class="h2" style="color: var(--dark-green); font-size: 32px; margin-bottom: 10px;" font-family: serif> Watch & Learn </h2>
+        <p style="color: #666; margin-bottom: 30px;">Enjoy our interactive video lessons</p>
+        <div class="videos-wrapper">
+            <div class="video-item">
+                <iframe src="https://www.youtube.com/embed/1yb3900UQlk?si=JFw-ermzIaA0KWRd" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div class="video-item">
+                <iframe src="https://www.youtube.com/embed/U5NLN2YmXH0" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </section>
+    <!-- Letter Modal -->
+    <div id="letterModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <div id="modalLetter" class="big-letter">A</div>
+            <div style="font-weight: bold; font-size: 20px;">Name: <span id="letterName" style="color: #7ed321;"></span></div>
+            <button class="audio-btn" onclick="playAudio('modalLetter')">🔊 Listen Letter</button>
+            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.2); margin: 20px 0;">
+            <img id="exampleImg" class="example-img" src="" alt="Example">
+            <div id="exampleText" style="font-size: 24px; font-weight: bold;"></div>
+            <button class="audio-btn" style="background-color: #4a90e2;" onclick="playAudio('exampleText')">🔊 Word Sound</button>
+        </div>
+    </div>
+
+    <!-- Game Modal -->
+    <div id="gameModal" class="game-overlay">
+        <div class="game-content">
+            <span class="close-btn" style="color: white; top: 10px; right: 20px;" onclick="closeGameModal()">&times;</span>
+            <h3>Where is the letter? 🔊</h3>
+            <button class="audio-btn" style="background: #a5d63f; padding: 15px 30px;" onclick="playGameLetter()">🔊 Hear the Letter</button>
+            <div id="gameOptions" style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;"></div>
+            <div id="gameFeedback" style="margin-top: 20px; font-size: 1.2rem; font-weight: bold; height: 30px;"></div>
+            <p id="gameProgress" style="margin-top: 15px; opacity: 0.8;"></p>
+        </div>
+    </div>
+<div id="chat-circle" onclick="toggleChat()">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
+    </div>
+
+    <div id="chat-box">
+        <div class="chat-header">
+            <span>✨ Gemini Assistant</span>
+            <button onclick="toggleChat()" style="background:none; border:none; color:white; cursor:pointer; font-size:20px;">×</button>
+        </div>
+        <div id="chat-content">
+            <div class="bot-msg">مرحباً! كيف أساعدك اليوم في تعلم الإنجليزية؟ <br> Hi! How can I help you with English today?</div>
+        </div>
+        <div class="chat-input-area">
+            <div class="input-wrapper">
+                <input type="text" id="user-input" placeholder="اكتب أو تحدث هنا..." onkeypress="if(event.key === 'Enter') sendMessage()">
+                <button class="action-btn" id="mic-btn" onclick="startVoice()">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                </button>
+            </div>
+            <button class="action-btn" onclick="sendMessage()" style="color: #69b01a;">
+                <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+        </div>
+    </div>
+   <script>
+
+   const alphabet = [
+            { char: 'A', name: 'Ay', example: 'Apple', img: 'https://cdn-icons-png.flaticon.com/512/415/415733.png' },
+            { char: 'B', name: 'Bee', example: 'Ball', img: 'https://cdn-icons-png.flaticon.com/512/2964/2964514.png' },
+            { char: 'C', name: 'See', example: 'Cat', img: 'https://cdn-icons-png.flaticon.com/512/616/616430.png' },
+            { char: 'D', name: 'Dee', example: 'Dog', img: 'https://cdn-icons-png.flaticon.com/512/616/616408.png' },
+            { char: 'E', name: 'Ee', example: 'Elephant', img: 'https://cdn-icons-png.flaticon.com/512/2397/2397530.png' },
+            { char: 'F', name: 'Ef', example: 'Fish', img: 'https://cdn-icons-png.flaticon.com/512/2970/2970038.png' },
+            { char: 'G', name: 'Jee', example: 'Giraffe', img: 'https://cdn-icons-png.flaticon.com/512/3069/3069175.png' },
+            { char: 'H', name: 'Aitch', example: 'Horse', img: 'https://cdn-icons-png.flaticon.com/512/3069/3069186.png' },
+            { char: 'I', name: 'Eye', example: 'Ice Cream', img: 'https://cdn-icons-png.flaticon.com/512/938/938063.png' },
+            { char: 'J', name: 'Jay', example: 'Juice', img: 'https://cdn-icons-png.flaticon.com/512/2442/2442006.png' },
+            { char: 'K', name: 'Kay', example: 'Kite', img: 'https://cdn-icons-png.flaticon.com/512/4243/4243916.png' },
+            { char: 'L', name: 'El', example: 'Lion', img: 'https://cdn-icons-png.flaticon.com/512/616/616412.png' },
+            { char: 'M', name: 'Em', example: 'Monkey', img: 'https://cdn-icons-png.flaticon.com/512/616/616416.png' },
+            { char: 'N', name: 'En', example: 'Nose', img: 'https://cdn-icons-png.flaticon.com/512/3048/3048366.png' },
+            { char: 'O', name: 'Oh', example: 'Orange', img: 'https://cdn-icons-png.flaticon.com/512/1728/1728765.png' },
+            { char: 'P', name: 'Pee', example: 'Panda', img: 'https://cdn-icons-png.flaticon.com/512/2397/2397491.png' },
+            { char: 'Q', name: 'Cue', example: 'Queen', img: 'https://cdn-icons-png.flaticon.com/512/1043/1043135.png' },
+            { char: 'R', name: 'Ar', example: 'Rabbit', img: 'https://cdn-icons-png.flaticon.com/512/616/616414.png' },
+            { char: 'S', name: 'Es', example: 'Sun', img: 'https://cdn-icons-png.flaticon.com/512/869/869869.png' },
+            { char: 'T', name: 'Tee', example: 'Tiger', img: 'https://cdn-icons-png.flaticon.com/512/616/616434.png' },
+            { char: 'U', name: 'You', example: 'Umbrella', img: 'https://cdn-icons-png.flaticon.com/512/3133/3133742.png' },
+            { char: 'V', name: 'Vee', example: 'Van', img: 'https://cdn-icons-png.flaticon.com/512/1739/1739702.png' },
+            { char: 'W', name: 'Double U', example: 'Watch', img: 'https://cdn-icons-png.flaticon.com/512/3256/3256428.png' },
+            { char: 'X', name: 'Ex', example: 'Xylophone', img: 'https://cdn-icons-png.flaticon.com/512/2275/2275525.png' },
+            { char: 'Y', name: 'Why', example: 'Yo-Yo', img: 'https://cdn-icons-png.flaticon.com/512/3354/3354452.png' },
+            { char: 'Z', name: 'Zee', example: 'Zebra', img: 'https://cdn-icons-png.flaticon.com/512/616/616428.png' }
+        ];
+
+           
+        const grid = document.getElementById('alphabetGrid');
+
+        const modal = document.getElementById('letterModal');
+
+        alphabet.forEach(item => {
+
+            const card = document.createElement('div');
+
+            card.className = 'letter-card';
+
+card.innerHTML = `<h2>${item.char}</h2><p>${item.name}</p>`;     
+
+       card.onclick = () => openModal(item);
+
+            grid.appendChild(card);
+
+        });
+
+        function closeModal() {
+
+            modal.style.display = 'none';
+
+        }
+
+        function playAudio() {
+
+            const text = document.getElementById('modalLetter').innerText;
+
+            const msg = new SpeechSynthesisUtterance(text);
+
+            window.speechSynthesis.speak(msg);
+
+        }
+
+        window.onclick = (event) => {
+
+            if (event.target == modal) closeModal();
+
+        }
+
+        function openModal(item) {
+
+    document.getElementById('modalLetter').innerText = item.char;
+
+    document.getElementById('letterName').innerText = item.name;
+
+    document.getElementById('exampleText').innerText = item.example;
+
+    document.getElementById('exampleImg').src = item.img;
+
+    document.getElementById('letterModal').style.display = 'flex';
+
+}
+
+function playAudio(elementId) {
+
+    const textToSpeak = document.getElementById(elementId).innerText; 
+
+    const speech = new SpeechSynthesisUtterance(textToSpeak);
+
+    speech.lang = 'en-US';
+
+    speech.rate = 0.8;     
+
+    window.speechSynthesis.speak(speech);
+
+}
+
+const quizData = [
+
+    { correct: 'A', options: ['B', 'A', 'C'] },
+
+    { correct: 'F', options: ['E', 'F', 'H'] },
+
+    { correct: 'S', options: ['S', 'Z', 'C'] },
+
+     { correct: 'Y', options: ['X', 'Y', 'Z'] },
+
+    { correct: 'T', options: ['M', 'U', 'T'] },
+
+    { correct: 'K', options: ['K', 'D', 'V'] },
+
+     { correct: 'Q', options: ['L', 'O', 'I'] },
+
+    { correct: 'R', options: ['R', 'Q', 'G'] }
+
+    
+
+];
+
+
+
+let currentQuizIndex = 0;
+
+let isProcessing = false;
+
+
+
+const sndCorrect = new Audio('https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3');
+
+const sndWrong = new Audio('https://assets.mixkit.co/active_storage/sfx/2020/2020-preview.mp3');
+
+
+
+function openGameModal() {
+
+    document.getElementById('gameModal').style.display = 'flex';
+
+    currentQuizIndex = 0;
+
+    loadQuizStep();
+
+}
+
+
+
+function closeGameModal() {
+
+    document.getElementById('gameModal').style.display = 'none';
+
+    window.speechSynthesis.cancel(); 
+
+}
+
+
+
+function loadQuizStep() {
+
+    isProcessing = false;
+
+    const step = quizData[currentQuizIndex];
+
+    const grid = document.getElementById('gameOptions');
+
+    const feedback = document.getElementById('gameFeedback');
+
+    
+
+    grid.innerHTML = '';
+
+    feedback.innerHTML = '';
+
+    document.getElementById('gameProgress').innerText = `السؤال ${currentQuizIndex + 1} من ${quizData.length}`;
+
+
+
+    step.options.forEach(letter => {
+
+        const card = document.createElement('div');
+
+        card.className = 'game-card';
+
+        card.innerText = letter;
+
+        card.onclick = () => checkGameAnswer(letter, card);
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+
+function playGameLetter() {
+
+    const text = quizData[currentQuizIndex].correct;
+
+    const msg = new SpeechSynthesisUtterance(text);
+
+    msg.lang = 'en-US';
+
+    window.speechSynthesis.speak(msg);
+
+}
+
+
+
+function checkGameAnswer(selected, cardEl) {
+
+    if (isProcessing) return;
+
+    const step = quizData[currentQuizIndex];
+
+    const feedback = document.getElementById('gameFeedback');
+
+
+
+    if (selected === step.correct) {
+
+        isProcessing = true;
+
+        cardEl.classList.add('correct');
+
+        feedback.innerHTML = "أحسنت! إجابة صحيحة 🎉";
+
+        feedback.className = "game-feedback game-success-msg";
+
+        sndCorrect.play().catch(()=>{});
+
+
+
+        setTimeout(() => {
+
+            currentQuizIndex++;
+
+            if (currentQuizIndex < quizData.length) {
+
+                loadQuizStep();
+
+            } else {
+
+                feedback.innerHTML = "بطل! لقد أنهيت التحدي 🏆";
+
+                setTimeout(closeGameModal, 2000);
+
+            }
+
+        }, 1500);
+
+    } else {
+
+        cardEl.classList.add('wrong');
+
+        feedback.innerHTML = "حاول مرة أخرى! ❌";
+
+        feedback.className = "game-feedback game-error-msg";
+
+        sndWrong.play().catch(()=>{});
+
+
+
+        setTimeout(() => {
+
+            cardEl.classList.remove('wrong');
+
+            feedback.innerHTML = "";
+
+        }, 800);
+
+    }
+
+}
+ // كود تسجيل الخروج المحدث
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            sessionStorage.removeItem('isLoggedIn'); 
+            sessionStorage.removeItem('currentUser');
+            window.location.href = "login.html"; 
+        });
+    }
+
+        function toggleChat() {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.style.display = (chatBox.style.display === 'none' || chatBox.style.display === '') ? 'flex' : 'none';
+        }
+
+        function startVoice() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) return alert("متصفحك لا يدعم التعرف الصوتي.");
+
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'ar-SA'; // يتعرف على العربي والإنجليزي تلقائياً في معظم الأنظمة
+
+            const micBtn = document.getElementById('mic-btn');
+            const inputField = document.getElementById('user-input');
+
+            recognition.onstart = () => {
+                micBtn.classList.add('mic-active');
+                inputField.placeholder = "جاري الاستماع...";
+            };
+
+            recognition.onresult = (event) => {
+                inputField.value = event.results[0][0].transcript;
+                setTimeout(sendMessage, 600); // إرسال تلقائي فور التوقف
+            };
+
+            recognition.onend = () => {
+                micBtn.classList.remove('mic-active');
+                inputField.placeholder = "اكتب أو تحدث هنا...";
+            };
+
+            recognition.start();
+        }
+
+       async function sendMessage() {
+    const input = document.getElementById('user-input');
+    const content = document.getElementById('chat-content');
+    const text = input.value.trim();
+    if (!text) return;
+
+    content.innerHTML += `<div class="msg user-msg">${text}</div>`;
+    input.value = '';
+    content.scrollTop = content.scrollHeight;
+
+    const loadingId = 'loading-' + Date.now();
+    content.innerHTML += `<div class="msg bot-msg" id="${loadingId}">...</div>`;
+
+    try {
+        const response = await fetch("http://localhost:3000/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message: text }),
+        });
+
+        const data = await response.json();
+
+        document.getElementById(loadingId).innerText = data.reply;
+
+    } catch (e) {
+        document.getElementById(loadingId).innerText = "خطأ في الاتصال بالسيرفر.";
+    }
+
+    content.scrollTop = content.scrollHeight;
+}
+ function toggleChat() {
+            const chatBox = document.getElementById('chat-box');
+            chatBox.style.display = (chatBox.style.display === 'none' || chatBox.style.display === '') ? 'flex' : 'none';
+        }
+
+        function startVoice() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) return alert("متصفحك لا يدعم التعرف الصوتي.");
+
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'ar-SA'; // يتعرف على العربي والإنجليزي تلقائياً في معظم الأنظمة
+
+            const micBtn = document.getElementById('mic-btn');
+            const inputField = document.getElementById('user-input');
+
+            recognition.onstart = () => {
+                micBtn.classList.add('mic-active');
+                inputField.placeholder = "جاري الاستماع...";
+            };
+
+            recognition.onresult = (event) => {
+                inputField.value = event.results[0][0].transcript;
+                setTimeout(sendMessage, 600); // إرسال تلقائي فور التوقف
+            };
+
+            recognition.onend = () => {
+                micBtn.classList.remove('mic-active');
+                inputField.placeholder = "اكتب أو تحدث هنا...";
+            };
+
+            recognition.start();
+        }
+
+       async function sendMessage() {
+    const input = document.getElementById('user-input');
+    const content = document.getElementById('chat-content');
+    const text = input.value.trim();
+    if (!text) return;
+
+    content.innerHTML += `<div class="msg user-msg">${text}</div>`;
+    input.value = '';
+    content.scrollTop = content.scrollHeight;
+
+    const loadingId = 'loading-' + Date.now();
+    content.innerHTML += `<div class="msg bot-msg" id="${loadingId}">...</div>`;
+
+    try {
+        const response = await fetch("http://localhost:3000/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message: text }),
+        });
+
+        const data = await response.json();
+
+        document.getElementById(loadingId).innerText = data.reply;
+
+    } catch (e) {
+        document.getElementById(loadingId).innerText = "خطأ في الاتصال بالسيرفر.";
+    }
+
+    content.scrollTop = content.scrollHeight;
+}
+    </script>
+</body>
+</html>
